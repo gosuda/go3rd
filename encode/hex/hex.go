@@ -1,4 +1,4 @@
-package hex3rd
+package hex
 
 import (
 	"encoding/hex"
