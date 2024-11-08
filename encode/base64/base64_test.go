@@ -95,7 +95,7 @@ func TestIsBase64(t *testing.T) {
 	}{
 		{"Valid base64 string", "aGVsbG8=", true},
 		{"Invalid base64 string", "invalid-base64", false},
-		{"Empty string", "", false},
+		{"Empty string", "", true},
 	}
 
 	for _, tt := range tests {
