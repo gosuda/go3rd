@@ -5,7 +5,7 @@ import (
 	"encoding/gob"
 )
 
-func Encode(data interface{}) ([]byte, error) {
+func Encode[T any](data T) ([]byte, error) {
 	var buffer bytes.Buffer
 	encoder := gob.NewEncoder(&buffer)
 	err := encoder.Encode(data)
@@ -15,14 +15,14 @@ func Encode(data interface{}) ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
-func MustDecode(encoded []byte, out interface{}) {
+func MustDecode[T any](encoded []byte, out *T) {
 	err := Decode(encoded, out)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func Decode(encoded []byte, out interface{}) error {
+func Decode[T any](encoded []byte, out *T) error {
 	buffer := bytes.NewBuffer(encoded)
 	decoder := gob.NewDecoder(buffer)
 	return decoder.Decode(out)
