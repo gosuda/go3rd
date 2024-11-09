@@ -2,13 +2,16 @@ package base64
 
 import (
 	"encoding/base64"
+	"unsafe"
 )
 
 func Encode[T ~string | ~[]byte](data T) string {
-	switch v := any(data).(type) {
-	case string:
-		return base64.StdEncoding.EncodeToString([]byte(v))
-	case []byte:
+	switch any((*T)(nil)).(type) {
+	case *string:
+		v := *(*string)(unsafe.Pointer(&data))
+		return base64.StdEncoding.EncodeToString(unsafe.Slice(unsafe.StringData(v), len(v)))
+	case *[]byte:
+		v := *(*[]byte)(unsafe.Pointer(&data))
 		return base64.StdEncoding.EncodeToString(v)
 	default:
 		panic("unsupported type")
