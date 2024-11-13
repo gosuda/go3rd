@@ -5,12 +5,13 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 )
 
 func HandleKillSig(ctx context.Context, handler func(), logger *log.Logger) context.Context {
 	ctx, cancel := context.WithCancel(ctx)
 	sigChannel := make(chan os.Signal, 1)
-	signal.Notify(sigChannel, os.Interrupt)
+	signal.Notify(sigChannel, os.Interrupt, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
 
 	go func() {
 		defer func() {
